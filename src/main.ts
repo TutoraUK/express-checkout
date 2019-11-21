@@ -21,7 +21,7 @@ interface Context {
 }
 
 export const extract = (env: Env, context: Context): Config => {
-  const branch = (env.GITHUB_REF || "").split("/")[2];
+  const branch = (env.GITHUB_REF || "").split("/").slice(2).join('/');
   const checkout = new GitCheckout(env.GITHUB_TOKEN || "", new DefaultGit());
   const repo = context.repo;
   const ref = context.sha;

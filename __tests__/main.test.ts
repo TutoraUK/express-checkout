@@ -23,6 +23,26 @@ describe("main", () => {
       assert.equal(maxDepth, 100);
       assert.equal(branch, "master");
     });
+    it("extracts arguments even if branch contains slashes", () => {
+      let expectedRepo = {
+        owner: "meetup",
+        repo: "express-checkout"
+      };
+      const { repo, branch, ref, maxDepth } = extract(
+        {
+          GITHUB_TOKEN: "foo",
+          GITHUB_REF: "refs/heads/feature/team/description"
+        },
+        {
+          repo: expectedRepo,
+          sha: "123"
+        }
+      );
+      assert.deepEqual(repo, expectedRepo);
+      assert.equal(ref, "123");
+      assert.equal(maxDepth, 100);
+      assert.equal(branch, "feature/team/description");
+    });
     it("accepts custom maxDepth", () => {
       const { maxDepth } = extract(
         {
